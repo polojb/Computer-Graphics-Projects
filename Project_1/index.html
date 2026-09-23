@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Computer Graphics Project 1</title>
+    <link rel="stylesheet" href="styles.css" />
+    <!--
+    Each script is loaded in order so that each function that is needed
+    in any other file can be used later
+    -->
+    <script src="js/shapes.js" defer></script>
+    <script src="js/scene.js" defer></script>
+    <script src="js/projection.js" defer></script>
+    <script src="js/level1.js" defer></script>
+    <script src="js/level2.js" defer></script>
+    <script src="js/level3.js" defer></script>
+    <script src="js/main.js" defer></script>
+</head>
+<body>
+    <button type="button" data-level="1">Level1</button>
+    <button type="button" data-level="2">Level2</button>
+    <button type="button" data-level="3">Level3</button>
+    <canvas id="canvas" width="1600" height="1000"></canvas>
+</body>
+</html>
