@@ -60,7 +60,7 @@ function drawLevel2() {
             let u2 = screenB.u / scaleX;
             let v2 = (canvas.height - screenB.v) / scaleY;
 
-            drawLine2(u1, v1, u2, v2, "white");
+            drawLine2(u1, v1, u2, v2, instance.color);
         }
     }
 
