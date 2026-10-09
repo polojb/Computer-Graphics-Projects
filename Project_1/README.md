@@ -82,6 +82,17 @@ For each triangle, every pixel in its bounding box it tested with edge functions
 
 ## AI Usage
 
+I used Claude as a learning support tool and to help finds ways that Level 3 could be optimized in order for it to run smoothly.
+
+**What I used AI for:**
+- **Understanding the concepts:** asking questions about pinhole camera projection, near-plane clipping, Bresenham's line algorithm, edge functions, barycentric coordinates and depth buffering, so I understood how to implement them.
+- **Optimization:** getting suggestions to make my existing code run faster and more cleanly.
+- **Cleanup and documentation:** formatting the code, adding explanatory comments, and drafting this README, which I then reviewed and edited.
+
+**What I did myself:**
+- The project idea, scene design and object models
+- Writing the rendering pipeline and all three levels
+- Deciding which suggestions to use, and testing every change
 
 
 
