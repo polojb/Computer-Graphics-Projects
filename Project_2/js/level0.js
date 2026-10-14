@@ -4,3 +4,10 @@ Project Preliminaries
     - A portion of this page (a header) should give a title , your name and have space for information about your project
     - Display a single cube of dimentions 2x2x2 in your scene
 */
+function level0() {
+    const canvas = document.getElementById('canvas');
+    const gl = canvas.getContext('webgl');
+}
+
+const vertexShaderSource = ``;
+const fragmentShaderSource = ``;
