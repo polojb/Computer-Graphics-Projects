@@ -1,7 +1,37 @@
-html, body { 
-    margin: 0; height: 100%; background: black; overflow: hidden;
+body {
+    margin: 0;
+    font-family: sans-serif;
+    background: #111;
+    color: #eee;
 }
 
-canvas { 
-    display: block; width: 100%; height: 100%;
+header {
+    padding: 10px 16px;
+    background: #222;
+}
+
+header h1 {
+    margin: 0 0 4px;
+    font-size: 1.3em;
+}
+
+header p {
+    margin: 0;
+    font-size: 0.9em;
+    color: #bbb;
+}
+
+#tabs {
+    padding: 8px 16px;
+    background: #1a1a1a;
+}
+
+#tabs button {
+    margin-right: 6px;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+
+#glcanvas {
+    display: block; width: 100%; height: 80vh;
 }
