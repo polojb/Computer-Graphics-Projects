@@ -1,27 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <<meta charset="UTF-8" />
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Computer Graphics Project 2: Cube World</title>
     <link rel="stylesheet" href="styles.css" />
-    <script type="module" src="js/main.js"></script>
 </head>
 <body>
     <header>
-        <h1>Project 2: Cube World</h1>
-        <p>Jaxon Polo &middot; Computer Graphics</p>
-        <div id="info"></div>
-        <div id="controls">
-            <button type="button" data-level="0">Level 0</button>
-            <button type="button" data-level="1">Level 1</button>
-            <button type="button" data-level="2">Level 2</button>
-            <button type="button" data-level="3">Level 3</button>
-            <button type="button" data-level="4">Level 4</button>
-            <span id="fps"></span>
-        </div>
-    </header>
+    <h1>Cube World</h1>
+    <p>Jaxon Polo</p>
+    <p>Computer Graphics Project 2</p>
 
-    <canvas id="canvas"></canvas>
+    <button onclick="showLevel(0)">Level 0</button>
+    <button onclick="showLevel(1)">Level 1</button>
+    <button onclick="showLevel(2)">Level 2</button>
+    <button onclick="showLevel(3)">Level 3</button>
+    <button onclick="showLevel(4)">Level 4</button>
+  </header>
+  
+  <canvas id="glcanvas"></canvas>
+ 
+  <script src="js/level0.js"></script>
+  <script src="js/level1.js"></script>
+  <script src="js/level2.js"></script>
+  <script src="js/level3.js"></script>
+  <script src="js/level4.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>
