@@ -18,68 +18,61 @@ Procedural cube landscape
 window.Levels = window.Levels || {};
  
 (function () {
-    // Same as level 0, plus a uModel matrix (places/scales each cube)
-    // and a uShade number (makes each cube a little lighter or darker)
     const vertexShaderSource = `
         attribute vec3 aPosition;
         attribute vec3 aColor;
         uniform mat4 uModel;
         uniform mat4 uView;
         uniform mat4 uProj;
-        uniform float uShade;
+        uniform vec3 uTint;
         varying vec3 vColor;
         void main() {
-            vColor = aColor * uShade;
+            vColor = aColor * uTint;
             gl_Position = uProj * uView * uModel * vec4(aPosition, 1.0);
         }`;
  
     const fragmentShaderSource = `
         precision mediump float;
-        uniform vec4 uTint;
-        varying vec4 vColor;
-        void main() { gl_FragColor = vColor * uTint; }`;
-        
-    // The same 2x2x2 cube as level 0 (24 vertices)
+        varying vec3 vColor;
+        void main() {
+            gl_FragColor = vec4(vColor, 1.0);
+        }`;
+ 
     const positions = [
         -1, -1,  1,   1, -1,  1,   1,  1,  1,  -1,  1,  1,  // front
         -1, -1, -1,  -1,  1, -1,   1,  1, -1,   1, -1, -1,  // back
         -1,  1, -1,  -1,  1,  1,   1,  1,  1,   1,  1, -1,  // top
         -1, -1, -1,   1, -1, -1,   1, -1,  1,  -1, -1,  1,  // bottom
-        1, -1, -1,    1,  1, -1,   1,  1,  1,   1, -1,  1,  // right
+         1, -1, -1,   1,  1, -1,   1,  1,  1,   1, -1,  1,  // right
         -1, -1, -1,  -1, -1,  1,  -1,  1,  1,  -1,  1, -1   // left
     ];
-
-    const faceColors = [
-        [1.0, 1.0, 1.0, 1.0], // Front: white
-        [1.0, 0.0, 0.0, 1.0], // Back: red
-        [0.0, 1.0, 0.0, 1.0], // Top: green
-        [0.0, 0.0, 1.0, 1.0], // Bottom: blue
-        [1.0, 1.0, 0.0, 1.0], // Right: yellow
-        [1.0, 0.0, 1.0, 1.0]  // Left: purple
-    ];
-
+ 
+    const BROWN = [0.45, 0.30, 0.15];
+    const GREEN = [0.30, 0.75, 0.25];
+    const faceBrightness = [0.8, 0.6, 1.0, 0.4, 0.7, 0.5];   // front, back, top, bottom, right, left
+ 
     const colors = [];
     for (let f = 0; f < 6; f++) {
         for (let v = 0; v < 4; v++) {
-            const y = positions[(f * 4 + v) * 3 + 1];
-            const b = y > 0 ? 1.0 : 0.4;
-            colors.push(faceColors[f][0] * b, faceColors[f][1] * b, faceColors[f][2] * b);
+            const t = positions[(f * 4 + v) * 3 + 1] > 0 ? 1 : 0;
+            for (let k = 0; k < 3; k++) {
+                colors.push((BROWN[k] + (GREEN[k] - BROWN[k]) * t) * faceBrightness[f]);
+            }
         }
     }
  
     const indices = [
-        0,  1,  2,   0,  2,  3,  // front
-        4,  5,  6,   4,  6,  7,  // back
-        8,  9, 10,   8, 10, 11,  // top
-        12, 13, 14,  12, 14, 15, // bottom
-        16, 17, 18,  16, 18, 19, // right
-        20, 21, 22,  20, 22, 23  // left
+        0,  1,  2,   0,  2,  3,
+        4,  5,  6,   4,  6,  7,
+        8,  9, 10,   8, 10, 11,
+        12, 13, 14,  12, 14, 15,
+        16, 17, 18,  16, 18, 19,
+        20, 21, 22,  20, 22, 23
     ];
-
-    const GRID_SIZE = 10;    // 10 × 10 = 100 cubes
-    const SPACING = 2;    // distance between cube centers
-
-
+ 
+    const GRID_SIZE = 64;
+    const SPACING = 2;
+ 
     function modelMatrix(x, height, z) {
         const sx = SPACING / 2, sy = height / 2, sz = SPACING / 2;
         return new Float32Array([
@@ -89,16 +82,17 @@ window.Levels = window.Levels || {};
             x,  height / 2, z, 1
         ]);
     }
-
+ 
     const cubes = [];
     for (let row = 0; row < GRID_SIZE; row++) {
         for (let col = 0; col < GRID_SIZE; col++) {
             const x = (col - (GRID_SIZE - 1) / 2) * SPACING;
             const z = (row - (GRID_SIZE - 1) / 2) * SPACING;
             const height = 0.5 + Math.random() * 4;
+            const shade = 0.8 + 0.2 * Math.random();
             cubes.push({
                 model: modelMatrix(x, height, z),
-                color: [Math.random(), Math.random(), Math.random()]
+                color: [shade, shade, shade]
             });
         }
     }
@@ -109,9 +103,7 @@ window.Levels = window.Levels || {};
         const s = gl.createShader(type);
         gl.shaderSource(s, src);
         gl.compileShader(s);
-        if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
-            throw new Error(gl.getShaderInfoLog(s));
-        }
+        if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s));
         return s;
     }
  
@@ -121,7 +113,7 @@ window.Levels = window.Levels || {};
         gl.bufferData(target, data, gl.STATIC_DRAW);
         return b;
     }
-
+ 
     window.Levels.level1 = {
         init(gl) {
             program = gl.createProgram();
@@ -134,15 +126,15 @@ window.Levels = window.Levels || {};
             idxBuf = makeBuffer(gl, gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices));
  
             loc = {
-                pos: gl.getAttribLocation(program, 'aPosition'),
-                col: gl.getAttribLocation(program, 'aColor'),
+                pos:   gl.getAttribLocation(program, 'aPosition'),
+                col:   gl.getAttribLocation(program, 'aColor'),
                 model: gl.getUniformLocation(program, 'uModel'),
-                tint: gl.getUniformLocation(program, 'uTint'),
-                view: gl.getUniformLocation(program, 'uView'),
-                proj: gl.getUniformLocation(program, 'uProj')
+                tint:  gl.getUniformLocation(program, 'uTint'),
+                view:  gl.getUniformLocation(program, 'uView'),
+                proj:  gl.getUniformLocation(program, 'uProj')
             };
         },
-
+ 
         draw(gl, camera) {
             gl.useProgram(program);
  
@@ -151,7 +143,7 @@ window.Levels = window.Levels || {};
             gl.enableVertexAttribArray(loc.pos);
  
             gl.bindBuffer(gl.ARRAY_BUFFER, colBuf);
-            gl.vertexAttribPointer(loc.col, 4, gl.FLOAT, false, 0, 0);
+            gl.vertexAttribPointer(loc.col, 3, gl.FLOAT, false, 0, 0);
             gl.enableVertexAttribArray(loc.col);
  
             gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, idxBuf);

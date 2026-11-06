@@ -4,28 +4,47 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Computer Graphics Project 2: Cube World</title>
-    <link rel="stylesheet" href="styles.css" />
+	<link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-    <header>
-    <h1>Cube World</h1>
-    <p>Jaxon Polo</p>
-    <p>Computer Graphics Project 2</p>
-
-    <button onclick="showLevel(0)">Level 0</button>
-    <button onclick="showLevel(1)">Level 1</button>
-    <button onclick="showLevel(2)">Level 2</button>
-    <button onclick="showLevel(3)">Level 3</button>
-    <button onclick="showLevel(4)">Level 4</button>
-  </header>
-  
-  <canvas id="glcanvas"></canvas>
+	<header>
+		<h1>Cube World</h1>
+		<p>Jaxon Polo</p>
+		<p>Computer Graphics Project 2</p>
  
-  <script src="js/level0.js"></script>
-  <script src="js/level1.js"></script>
-  <script src="js/level2.js"></script>
-  <script src="js/level3.js"></script>
-  <script src="js/level4.js"></script>
-  <script src="js/main.js"></script>
+		<button onclick="showLevel(0)">Level 0</button>
+		<button onclick="showLevel(1)">Level 1</button>
+		<button onclick="showLevel(2)">Level 2</button>
+		<button onclick="showLevel(3)">Level 3</button>
+		<button onclick="showLevel(4)">Level 4</button>
+ 
+		<!-- main.js fills this in with a description of the current level -->
+		<p id="info"></p>
+ 
+		<div id="controls">
+			<label>Resolution:
+				<select id="res">
+					<option value="32">32 x 32 (fast)</option>
+					<option value="64" selected>64 x 64</option>
+					<option value="128">128 x 128</option>
+					<option value="256">256 x 256 (needs a fast computer)</option>
+				</select>
+			</label>
+			<span>Levels 2 to 4 sample image data. Higher resolutions need a reasonably powerful computer.</span>
+			<label>Time of day:
+				<input type="range" id="timeOfDay" min="0" max="24" step="0.1" value="9">
+			</label>
+			<button id="autoTime">Auto</button>
+		</div>
+	</header>
+ 
+	<canvas id="glcanvas"></canvas>
+ 
+	<script src="js/level0.js"></script>
+	<script src="js/level1.js"></script>
+	<script src="js/level2.js"></script>
+	<script src="js/level3.js"></script>
+	<script src="js/level4.js"></script>
+	<script src="js/main.js"></script>
 </body>
 </html>

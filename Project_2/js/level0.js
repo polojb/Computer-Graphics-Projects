@@ -5,7 +5,7 @@ Project Preliminaries
     - Display a single cube of dimentions 2x2x2 in your scene
 */
 
-window.Levels = window.Levels || {};   // make sure the shared object exists
+window.Levels = window.Levels || {};
  
 (function () {
     const vertexShaderSource = `
@@ -27,18 +27,12 @@ window.Levels = window.Levels || {};   // make sure the shared object exists
         }`;
  
     const positions = [
-        // Front face
-        -1.0, -1.0,  1.0,   1.0, -1.0,  1.0,   1.0,  1.0,  1.0,  -1.0,  1.0,  1.0,
-        // Back face
-        -1.0, -1.0, -1.0,  -1.0,  1.0, -1.0,   1.0,  1.0, -1.0,   1.0, -1.0, -1.0,
-        // Top face
-        -1.0,  1.0, -1.0,  -1.0,  1.0,  1.0,   1.0,  1.0,  1.0,   1.0,  1.0, -1.0,
-        // Bottom face
-        -1.0, -1.0, -1.0,   1.0, -1.0, -1.0,   1.0, -1.0,  1.0,  -1.0, -1.0,  1.0,
-        // Right face
-        1.0, -1.0, -1.0,   1.0,  1.0, -1.0,   1.0,  1.0,  1.0,   1.0, -1.0,  1.0,
-        // Left face
-        -1.0, -1.0, -1.0,  -1.0, -1.0,  1.0,  -1.0,  1.0,  1.0,  -1.0,  1.0, -1.0
+        -1, -1,  1,   1, -1,  1,   1,  1,  1,  -1,  1,  1,  // front
+        -1, -1, -1,  -1,  1, -1,   1,  1, -1,   1, -1, -1,  // back
+        -1,  1, -1,  -1,  1,  1,   1,  1,  1,   1,  1, -1,  // top
+        -1, -1, -1,   1, -1, -1,   1, -1,  1,  -1, -1,  1,  // bottom
+        1, -1, -1,    1,  1, -1,   1,  1,  1,   1, -1,  1,  // right
+        -1, -1, -1,  -1, -1,  1,  -1,  1,  1,  -1,  1, -1   // left
     ];
  
     const faceColors = [
@@ -80,7 +74,6 @@ window.Levels = window.Levels || {};   // make sure the shared object exists
     }
  
     window.Levels.level0 = {
-        // once: build the shader program and upload the cube to the GPU
         init(gl) {
             program = gl.createProgram();
             gl.attachShader(program, compile(gl, gl.VERTEX_SHADER, vertexShaderSource));
@@ -90,8 +83,7 @@ window.Levels = window.Levels || {};   // make sure the shared object exists
             posBuf = makeBuffer(gl, gl.ARRAY_BUFFER, new Float32Array(positions));
             colBuf = makeBuffer(gl, gl.ARRAY_BUFFER, new Float32Array(colors));
             idxBuf = makeBuffer(gl, gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices));
- 
-            // these names must match the names inside the shaders
+
             loc = {
                 pos: gl.getAttribLocation(program, 'aPosition'),
                 col: gl.getAttribLocation(program, 'aColor'),
@@ -100,7 +92,6 @@ window.Levels = window.Levels || {};   // make sure the shared object exists
             };
         },
  
-        // every frame: draw the cube using main.js's camera
         draw(gl, camera) {
             gl.useProgram(program);
  
